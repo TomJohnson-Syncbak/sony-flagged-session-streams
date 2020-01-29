@@ -1,0 +1,189 @@
+{
+    "ApplicationDetail": {
+        "ApplicationName": "PlaylistServerStatsFilterOnlyFlagged",
+        "ApplicationDescription": "Takes input from PlaylistServerStats, selects only the flagged sessions from Sony, and sends those records to another Kinesis stream",
+        "ApplicationARN": "arn:aws:kinesisanalytics:us-east-1:501027711207:application/PlaylistServerStatsFilterOnlyFlagged",
+        "ApplicationStatus": "RUNNING",
+        "CreateTimestamp": 1548279875.0,
+        "LastUpdateTimestamp": 1573600733.0,
+        "InputDescriptions": [
+            {
+                "InputId": "2.1",
+                "NamePrefix": "SOURCE_SQL_STREAM",
+                "InAppStreamNames": [
+                    "SOURCE_SQL_STREAM_001"
+                ],
+                "InputProcessingConfigurationDescription": {
+                    "InputLambdaProcessorDescription": {
+                        "ResourceARN": "arn:aws:lambda:us-east-1:501027711207:function:PreprocessForFlaggedSonySessions:$LATEST",
+                        "RoleARN": "arn:aws:iam::501027711207:role/service-role/kinesis-analytics-PlaylistServerStatsFilterOnlyFlagged-us-east-1"
+                    }
+                },
+                "KinesisStreamsInputDescription": {
+                    "ResourceARN": "arn:aws:kinesis:us-east-1:501027711207:stream/PlaylistServerStats",
+                    "RoleARN": "arn:aws:iam::501027711207:role/service-role/kinesis-analytics-PlaylistServerStatsFilterOnlyFlagged-us-east-1"
+                },
+                "InputSchema": {
+                    "RecordFormat": {
+                        "RecordFormatType": "JSON",
+                        "MappingParameters": {
+                            "JSONMappingParameters": {
+                                "RecordRowPath": "$"
+                            }
+                        }
+                    },
+                    "RecordEncoding": "UTF-8",
+                    "RecordColumns": [
+                        {
+                            "Name": "sessionId",
+                            "Mapping": "$.sessionId",
+                            "SqlType": "VARCHAR(64)"
+                        },
+                        {
+                            "Name": "duration",
+                            "Mapping": "$.duration",
+                            "SqlType": "BIGINT"
+                        },
+                        {
+                            "Name": "dma",
+                            "Mapping": "$.dma",
+                            "SqlType": "INTEGER"
+                        },
+                        {
+                            "Name": "siteId",
+                            "Mapping": "$.siteId",
+                            "SqlType": "INTEGER"
+                        },
+                        {
+                            "Name": "mediaId",
+                            "Mapping": "$.mediaId",
+                            "SqlType": "INTEGER"
+                        },
+                        {
+                            "Name": "handlerVersion",
+                            "Mapping": "$.handlerVersion",
+                            "SqlType": "CHAR(8)"
+                        },
+                        {
+                            "Name": "handlerName",
+                            "Mapping": "$.handlerName",
+                            "SqlType": "VARCHAR(16)"
+                        },
+                        {
+                            "Name": "deviceType",
+                            "Mapping": "$.deviceType",
+                            "SqlType": "INTEGER"
+                        },
+                        {
+                            "Name": "deviceId",
+                            "Mapping": "$.deviceId",
+                            "SqlType": "VARCHAR(64)"
+                        },
+                        {
+                            "Name": "channelId",
+                            "Mapping": "$.channelId",
+                            "SqlType": "INTEGER"
+                        },
+                        {
+                            "Name": "ips",
+                            "Mapping": "$.ips",
+                            "SqlType": "VARCHAR(256)"
+                        },
+                        {
+                            "Name": "ipCount",
+                            "Mapping": "$.ipCount",
+                            "SqlType": "INTEGER"
+                        },
+                        {
+                            "Name": "rateLimited",
+                            "Mapping": "$.rateLimited",
+                            "SqlType": "BOOLEAN"
+                        },
+                        {
+                            "Name": "rateLimitEnforced",
+                            "Mapping": "$.rateLimitEnforced",
+                            "SqlType": "BOOLEAN"
+                        },
+                        {
+                            "Name": "sessionLogEventCount",
+                            "Mapping": "$.sessionLogEventCount",
+                            "SqlType": "INTEGER"
+                        },
+                        {
+                            "Name": "flagReason",
+                            "Mapping": "$.flagReason",
+                            "SqlType": "VARCHAR(32)"
+                        },
+                        {
+                            "Name": "ts",
+                            "Mapping": "$.ts",
+                            "SqlType": "BIGINT"
+                        },
+                        {
+                            "Name": "type",
+                            "Mapping": "$.type",
+                            "SqlType": "VARCHAR(16)"
+                        },
+                        {
+                            "Name": "userId",
+                            "Mapping": "$.userId",
+                            "SqlType": "VARCHAR(128)"
+                        },
+                        {
+                            "Name": "COL_count",
+                            "Mapping": "$.count",
+                            "SqlType": "INTEGER"
+                        },
+                        {
+                            "Name": "averageDuration",
+                            "Mapping": "$.averageDuration",
+                            "SqlType": "INTEGER"
+                        },
+                        {
+                            "Name": "flaggedCount",
+                            "Mapping": "$.flaggedCount",
+                            "SqlType": "INTEGER"
+                        },
+                        {
+                            "Name": "handler",
+                            "Mapping": "$.handler",
+                            "SqlType": "VARCHAR(16)"
+                        }
+                    ]
+                },
+                "InputParallelism": {
+                    "Count": 1
+                },
+                "InputStartingPositionConfiguration": {
+                    "InputStartingPosition": "NOW"
+                }
+            }
+        ],
+        "OutputDescriptions": [
+            {
+                "OutputId": "11.1",
+                "Name": "DESTINATION_SQL_STREAM",
+                "KinesisFirehoseOutputDescription": {
+                    "ResourceARN": "arn:aws:firehose:us-east-1:501027711207:deliverystream/PlaylistServerStats-FlaggedSony",
+                    "RoleARN": "arn:aws:iam::501027711207:role/service-role/kinesis-analytics-PlaylistServerStatsFilterOnlyFlagged-us-east-1"
+                },
+                "DestinationSchema": {
+                    "RecordFormatType": "JSON"
+                }
+            },
+            {
+                "OutputId": "16.1",
+                "Name": "DESTINATION_SQL_STREAM_002",
+                "KinesisStreamsOutputDescription": {
+                    "ResourceARN": "arn:aws:kinesis:us-east-1:501027711207:stream/SonyPlaylistSessionEvents",
+                    "RoleARN": "arn:aws:iam::501027711207:role/service-role/kinesis-analytics-PlaylistServerStatsFilterOnlyFlagged-us-east-1"
+                },
+                "DestinationSchema": {
+                    "RecordFormatType": "JSON"
+                }
+            }
+        ],
+        "ApplicationCode": "CREATE OR REPLACE STREAM \"DESTINATION_SQL_STREAM\" (\"sessionId\" VARCHAR(64), \n      \"duration\" BIGINT,\n      \"dma\" INT,\n      \"siteId\" INT,\n      \"mediaId\" INT,\n      \"channelId\" INT,\n      \"handlerName\" VARCHAR(16),\n      \"handlerVersion\" VARCHAR(8),\n      \"deviceType\" INT, \n      \"deviceId\" VARCHAR(64),\n      \"ips\" VARCHAR (1024),\n      \"ipCount\" INT,\n      \"rateLimited\" BOOLEAN,\n      \"rateLimitEnforced\" BOOLEAN,\n      \"sessionLogEventCount\" INT,\n      \"flagReason\" VARCHAR (32),\n      \"ts\" BIGINT,\n      \"type\" VARCHAR(16),\n      \"userId\" VARCHAR(128),\n      \"count\" INT,\n      \"averageDuration\" INT,\n      \"flaggedCount\" INT,\n      \"handler\" VARCHAR(16));\n      \n\nCREATE OR REPLACE PUMP \"STREAM_PUMP\" AS \n   INSERT INTO \"DESTINATION_SQL_STREAM\"\n SELECT \"sessionId\", \"duration\", \"dma\", \"siteId\" , \"mediaId\", \"channelId\", \"handlerName\", \"handlerVersion\", \"deviceType\", \"deviceId\",\n      \"ips\" , \"ipCount\",\"rateLimited\",\"rateLimitEnforced\", \"sessionLogEventCount\", \"flagReason\", \"ts\", \"type\", \"userId\", \"COL_count\" AS \"count\", \"averageDuration\",\n      \"flaggedCount\", \"handler\"\n      FROM \"SOURCE_SQL_STREAM_001\";\n      \n      \n      CREATE OR REPLACE STREAM \"DESTINATION_SQL_STREAM_002\" (\"sessionId\" VARCHAR(64), \n      \"duration\" BIGINT,\n      \"dma\" INT,\n      \"siteId\" INT,\n      \"mediaId\" INT,\n      \"channelId\" INT,\n      \"handlerName\" VARCHAR(16),\n      \"handlerVersion\" VARCHAR(8),\n      \"deviceType\" INT, \n      \"deviceId\" VARCHAR(64),\n      \"ips\" VARCHAR (1024),\n      \"ipCount\" INT,\n      \"rateLimited\" BOOLEAN,\n      \"rateLimitEnforced\" BOOLEAN,\n      \"sessionLogEventCount\" INT,\n      \"flagReason\" VARCHAR (32),\n      \"ts\" BIGINT,\n      \"type\" VARCHAR(16),\n      \"userId\" VARCHAR(128),\n      \"count\" INT,\n      \"averageDuration\" INT,\n      \"flaggedCount\" INT,\n      \"handler\" VARCHAR(16));\n      \n\nCREATE OR REPLACE PUMP \"STREAM_PUMP2\" AS \n   INSERT INTO \"DESTINATION_SQL_STREAM_002\"\n SELECT \"sessionId\", \"duration\", \"dma\", \"siteId\" , \"mediaId\", \"channelId\", \"handlerName\", \"handlerVersion\", \"deviceType\", \"deviceId\",\n      \"ips\" , \"ipCount\",\"rateLimited\",\"rateLimitEnforced\", \"sessionLogEventCount\", \"flagReason\", \"ts\", \"type\", \"userId\", \"COL_count\" AS \"count\", \"averageDuration\",\n      \"flaggedCount\", \"handler\"\n      FROM \"SOURCE_SQL_STREAM_001\";\n",
+        "ApplicationVersionId": 20
+    }
+}

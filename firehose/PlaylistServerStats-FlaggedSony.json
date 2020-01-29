@@ -1,0 +1,58 @@
+{
+    "DeliveryStreamDescription": {
+        "DeliveryStreamName": "PlaylistServerStats-FlaggedSony",
+        "DeliveryStreamARN": "arn:aws:firehose:us-east-1:501027711207:deliverystream/PlaylistServerStats-FlaggedSony",
+        "DeliveryStreamStatus": "ACTIVE",
+        "DeliveryStreamType": "DirectPut",
+        "VersionId": "1",
+        "CreateTimestamp": 1548448361.38,
+        "Destinations": [
+            {
+                "DestinationId": "destinationId-000000000001",
+                "ElasticsearchDestinationDescription": {
+                    "RoleARN": "arn:aws:iam::501027711207:role/firehose_delivery_role_pls_flagged_sony",
+                    "DomainARN": "arn:aws:es:us-east-1:501027711207:domain/playlist-flagged-sony-domain",
+                    "IndexName": "logs",
+                    "TypeName": "doc",
+                    "IndexRotationPeriod": "OneDay",
+                    "BufferingHints": {
+                        "IntervalInSeconds": 60,
+                        "SizeInMBs": 1
+                    },
+                    "RetryOptions": {
+                        "DurationInSeconds": 300
+                    },
+                    "S3BackupMode": "FailedDocumentsOnly",
+                    "S3DestinationDescription": {
+                        "RoleARN": "arn:aws:iam::501027711207:role/firehose_delivery_role_pls_flagged_sony",
+                        "BucketARN": "arn:aws:s3:::firehose-phase6",
+                        "Prefix": "pls-flagged-sony-errors",
+                        "BufferingHints": {
+                            "SizeInMBs": 1,
+                            "IntervalInSeconds": 60
+                        },
+                        "CompressionFormat": "UNCOMPRESSED",
+                        "EncryptionConfiguration": {
+                            "NoEncryptionConfig": "NoEncryption"
+                        },
+                        "CloudWatchLoggingOptions": {
+                            "Enabled": true,
+                            "LogGroupName": "/aws/kinesisfirehose/PlaylistServerStats-FlaggedSony",
+                            "LogStreamName": "S3Delivery"
+                        }
+                    },
+                    "ProcessingConfiguration": {
+                        "Enabled": false,
+                        "Processors": []
+                    },
+                    "CloudWatchLoggingOptions": {
+                        "Enabled": true,
+                        "LogGroupName": "/aws/kinesisfirehose/PlaylistServerStats-FlaggedSony",
+                        "LogStreamName": "ElasticsearchDelivery"
+                    }
+                }
+            }
+        ],
+        "HasMoreDestinations": false
+    }
+}
